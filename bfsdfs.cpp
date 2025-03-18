@@ -23,6 +23,31 @@ public:
         adj[v].push_back(u); // Undirected graph
     }
 
+    void serialBFS(int start) {
+        vector<bool> visited(V, false);
+        queue<int> q;
+        q.push(start);
+        visited[start] = true;
+
+        cout << "Serial BFS Traversal: ";
+        auto start_time = high_resolution_clock::now();
+
+        while (!q.empty()) {
+            int node = q.front();
+            q.pop();
+            cout << node << " ";
+
+            for (int neighbor : adj[node]) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    q.push(neighbor);
+                }
+            }
+        }
+        auto end_time = high_resolution_clock::now();
+        cout << "\nExecution Time: " << duration_cast<microseconds>(end_time - start_time).count() << " microseconds\n";
+    }
+
     void parallelBFS(int start) {
         vector<bool> visited(V, false);
         queue<int> q;
@@ -56,6 +81,31 @@ public:
 
             for (int n : nextLevel) {
                 q.push(n);
+            }
+        }
+        auto end_time = high_resolution_clock::now();
+        cout << "\nExecution Time: " << duration_cast<microseconds>(end_time - start_time).count() << " microseconds\n";
+    }
+
+    void serialDFS(int start) {
+        vector<bool> visited(V, false);
+        stack<int> s;
+        s.push(start);
+        visited[start] = true;
+
+        cout << "Serial DFS Traversal: ";
+        auto start_time = high_resolution_clock::now();
+
+        while (!s.empty()) {
+            int node = s.top();
+            s.pop();
+            cout << node << " ";
+
+            for (int neighbor : adj[node]) {
+                if (!visited[neighbor]) {
+                    visited[neighbor] = true;
+                    s.push(neighbor);
+                }
             }
         }
         auto end_time = high_resolution_clock::now();
@@ -107,7 +157,9 @@ int main() {
     g.addEdge(2, 5);
     g.addEdge(2, 6);
 
+    g.serialBFS(0);
     g.parallelBFS(0);
+    g.serialDFS(0);
     g.parallelDFS(0);
     
     return 0;
