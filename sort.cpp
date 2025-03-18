@@ -100,32 +100,41 @@ vector<int> generateRandomArray(int size) {
 }
 
 int main() {
-    int size = 5000; 
+    int size = 50000; 
 
     vector<int> arr1 = generateRandomArray(size);
     vector<int> arr2 = arr1;
     vector<int> arr3 = arr1;
     vector<int> arr4 = arr1;
+
+    float t1,t2,t3,t4;
     
     auto start = high_resolution_clock::now();
     bubbleSort(arr1);
     auto end = high_resolution_clock::now();
     cout << "Sequential Bubble Sort Time: " << duration_cast<milliseconds>(end - start).count() << " ms\n";
+    t1 = (end - start).count();
 
     start = high_resolution_clock::now();
     parallelBubbleSort(arr2);
     end = high_resolution_clock::now();
     cout << "Parallel Bubble Sort Time: " << duration_cast<milliseconds>(end - start).count() << " ms\n";
+    t2 = (end - start).count();
 
     start = high_resolution_clock::now();
     mergeSort(arr3, 0, size - 1);
     end = high_resolution_clock::now();
     cout << "Sequential Merge Sort Time: " << duration_cast<milliseconds>(end - start).count() << " ms\n";
+    t3 = (end - start).count();
 
     start = high_resolution_clock::now();
     parallelMergeSort(arr4, 0, size - 1);
     end = high_resolution_clock::now();
     cout << "Parallel Merge Sort Time: " << duration_cast<milliseconds>(end - start).count() << " ms\n";
+    t4 = (end - start).count();
+
+    cout<<"SPEED FACTOR BUBBLE SORT "<<t1/t2<<"\n";
+    cout<<"SPEED FACTOR MERGE SORT "<<t3/t4<<"\n";
     
     return 0;
 }

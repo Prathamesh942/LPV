@@ -23,7 +23,7 @@ public:
         adj[v].push_back(u); // Undirected graph
     }
 
-    void serialBFS(int start) {
+    float serialBFS(int start) {
         vector<bool> visited(V, false);
         queue<int> q;
         q.push(start);
@@ -35,7 +35,7 @@ public:
         while (!q.empty()) {
             int node = q.front();
             q.pop();
-            cout << node << " ";
+            // cout << node << " ";
 
             for (int neighbor : adj[node]) {
                 if (!visited[neighbor]) {
@@ -46,9 +46,10 @@ public:
         }
         auto end_time = high_resolution_clock::now();
         cout << "\nExecution Time: " << duration_cast<microseconds>(end_time - start_time).count() << " microseconds\n";
+        return (end_time - start_time).count();
     }
 
-    void parallelBFS(int start) {
+    float parallelBFS(int start) {
         vector<bool> visited(V, false);
         queue<int> q;
         q.push(start);
@@ -69,7 +70,7 @@ public:
                     node = q.front();
                     q.pop();
                 }
-                cout << node << " ";
+                // cout << node << " ";
 
                 for (int neighbor : adj[node]) {
                     if (!visited[neighbor]) {
@@ -85,9 +86,10 @@ public:
         }
         auto end_time = high_resolution_clock::now();
         cout << "\nExecution Time: " << duration_cast<microseconds>(end_time - start_time).count() << " microseconds\n";
+        return (end_time - start_time).count();
     }
 
-    void serialDFS(int start) {
+    float serialDFS(int start) {
         vector<bool> visited(V, false);
         stack<int> s;
         s.push(start);
@@ -99,7 +101,7 @@ public:
         while (!s.empty()) {
             int node = s.top();
             s.pop();
-            cout << node << " ";
+            // cout << node << " ";
 
             for (int neighbor : adj[node]) {
                 if (!visited[neighbor]) {
@@ -110,9 +112,10 @@ public:
         }
         auto end_time = high_resolution_clock::now();
         cout << "\nExecution Time: " << duration_cast<microseconds>(end_time - start_time).count() << " microseconds\n";
+        return (end_time - start_time).count();
     }
 
-    void parallelDFS(int start) {
+    float parallelDFS(int start) {
         vector<bool> visited(V, false);
         stack<int> s;
         s.push(start);
@@ -128,7 +131,7 @@ public:
                 node = s.top();
                 s.pop();
             }
-            cout << node << " ";
+            // cout << node << " ";
 
             vector<int> neighbors;
             for (int neighbor : adj[node]) {
@@ -145,22 +148,21 @@ public:
         }
         auto end_time = high_resolution_clock::now();
         cout << "\nExecution Time: " << duration_cast<microseconds>(end_time - start_time).count() << " microseconds\n";
+        return (end_time - start_time).count();
     }
 };
 
 int main() {
-    Graph g(7);
-    g.addEdge(0, 1);
-    g.addEdge(0, 2);
-    g.addEdge(1, 3);
-    g.addEdge(1, 4);
-    g.addEdge(2, 5);
-    g.addEdge(2, 6);
+    Graph g(5000);
+    for(int i=0; i<5000; i++){
+        for(int j=0; j<i; j++) g.addEdge(i,j);
+    }
 
-    g.serialBFS(0);
-    g.parallelBFS(0);
-    g.serialDFS(0);
-    g.parallelDFS(0);
-    
+    float t1 = g.serialBFS(0);
+    float t2 = g.parallelBFS(0);
+    float t3 = g.serialDFS(0);
+    float t4 = g.parallelDFS(0);
+    cout<<"BFS SPEED FACTOR "<<t1/t2<<"\n";
+    cout<<"DFS SPEED FACTOR "<<t3/t4<<"\n";
     return 0;
 }
