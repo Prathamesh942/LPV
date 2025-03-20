@@ -7,7 +7,7 @@
 using namespace std;
 using namespace chrono;
 
-vector<float> serialReduction(const vector<int> &arr) {
+vector<float> serialReduction(const vector<long long> &arr) {
     auto start_time = high_resolution_clock::now();
     int minVal = numeric_limits<int>::max();
     int maxVal = numeric_limits<int>::min();
@@ -45,7 +45,7 @@ vector<float> serialReduction(const vector<int> &arr) {
     return time;
 }
 
-vector<float> parallelReduction(const vector<int> &arr) {
+vector<float> parallelReduction(const vector<long long> &arr) {
     auto start_time = high_resolution_clock::now();
     int minVal = numeric_limits<int>::max();
     int maxVal = numeric_limits<int>::min();
@@ -88,7 +88,7 @@ vector<float> parallelReduction(const vector<int> &arr) {
 }
 
 int main() {
-    vector<int> arr(7000000);
+    vector<long long> arr(10000000);
     for (int i = 0; i < arr.size(); i++) {
         arr[i] = rand() % 10000;
     }
@@ -96,6 +96,8 @@ int main() {
     vector<float> v1 = serialReduction(arr);
     cout << "---------------------------" << endl;
     vector<float> v2 = parallelReduction(arr);
+    cout<<v1[0]<<" "<<v1[1]<<" "<<v1[2]<<" "<<v1[3]<<"\n";
+    cout<<v2[0]<<" "<<v2[1]<<" "<<v2[2]<<" "<<v2[3]<<"\n";
     cout<<"SPEED UP FACTOR "<<"\n";
     cout<<"min "<<v1[0]/v2[0]<<"\n";
     cout<<"max "<<v1[1]/v2[1]<<"\n";
